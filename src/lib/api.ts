@@ -80,7 +80,7 @@ export async function createLead(leadData: {
 
 // ==================== WORKERS (Staff Workers) ====================
 
-export async function fetchWorkers(accountOwnerId: string) {
+export async function fetchWorkers(accountOwnerId: string, eventId?: string) {
   const { data, error } = await supabase
     .from('profiles')
     .select('*')
@@ -96,10 +96,18 @@ export async function fetchWorkers(accountOwnerId: string) {
   // Fetch leads count for each worker
   const workersWithCounts = await Promise.all(
     (data || []).map(async (worker) => {
-      const { count } = await supabase
+      // Build the query for counting leads
+      let countQuery = supabase
         .from('leads')
         .select('*', { count: 'exact', head: true })
         .eq('collected_by', worker.id);
+      
+      // If eventId is provided, filter by current event only
+      if (eventId) {
+        countQuery = countQuery.eq('event_id', eventId);
+      }
+      
+      const { count } = await countQuery;
 
       return {
         id: worker.id,
