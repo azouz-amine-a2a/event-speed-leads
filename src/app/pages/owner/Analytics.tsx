@@ -23,12 +23,12 @@ export function Analytics() {
     try {
       setIsLoading(true);
 
-      // Fetch workers with lead counts
-      const workersData = await fetchWorkers(user!.id);
-      setWorkers(workersData);
-
-      // Get current event
+      // Get current event first
       const event = await fetchCurrentEvent();
+
+      // Fetch workers with lead counts filtered by current event
+      const workersData = await fetchWorkers(user!.id, event?.id);
+      setWorkers(workersData);
 
       // Fetch leads for chart data
       const leadsData = await fetchLeads(user!.id, event?.id);
