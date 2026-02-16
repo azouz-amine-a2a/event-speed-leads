@@ -25,12 +25,13 @@ export function DataExport() {
   const loadData = async () => {
     try {
       setIsLoading(true);
-      const [workersData, event] = await Promise.all([
-        fetchWorkers(user!.id),
-        fetchCurrentEvent(),
-      ]);
-      setWorkers(workersData);
+      // First fetch the current event
+      const event = await fetchCurrentEvent();
       setCurrentEvent(event);
+      
+      // Then fetch workers with lead counts filtered by current event
+      const workersData = await fetchWorkers(user!.id, event?.id);
+      setWorkers(workersData);
     } catch (error) {
       console.error('Error loading data:', error);
       toast.error(t('export.errorLoading') || 'Failed to load data');
