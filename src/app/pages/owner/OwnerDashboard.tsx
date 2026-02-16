@@ -4,13 +4,20 @@ import { useLanguage } from '../../context/LanguageContext';
 import { BRANDING } from '../../config/branding';
 import { Footer } from '../../components/Footer';
 import { Building2, BarChart3, Users, FileDown, Settings, LogOut, Menu, X } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export function OwnerDashboard() {
   const { user, logout } = useAuth();
-  const { t } = useLanguage();
+  const { t, setLanguage } = useLanguage();
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Sync language from user's database preference
+  useEffect(() => {
+    if (user?.languagePreference && (user.languagePreference === 'en' || user.languagePreference === 'fr')) {
+      setLanguage(user.languagePreference);
+    }
+  }, [user?.languagePreference, setLanguage]);
 
   const handleLogout = () => {
     logout();
