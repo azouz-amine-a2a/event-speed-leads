@@ -7,8 +7,22 @@ export async function fetchLeads(accountOwnerId?: string, eventId?: string, work
   let query = supabase
     .from('leads')
     .select(`
-      *,
-      event:events(event_name),
+      id,
+      event_id,
+      collected_by,
+      account_owner_id,
+      full_name,
+      company,
+      email,
+      phone,
+      profile,
+      geographic_zone,
+      client_manager,
+      interest_during_visit,
+      comments,
+      created_at,
+      updated_at,
+      event:events(event_name, industry),
       collector:profiles!collected_by(full_name),
       owner:profiles!account_owner_id(full_name)
     `)
