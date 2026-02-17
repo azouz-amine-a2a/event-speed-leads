@@ -11,7 +11,7 @@ export const BRANDING = {
   platformTagline: 'Lead Collection System',
   
   // Company/Provider Information (for "Powered by" footer)
-  companyName: 'PhoenixCom',
+  companyName: 'PhenixCom',
   platformUrl: 'https://phenixcom.consulting',
   
   // Logo Configuration
